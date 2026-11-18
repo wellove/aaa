@@ -5,24 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>눈 운동 가이드 - Eye Exercise Guide</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fonts-archive/Paperlogy/Paperlogy.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     :root {
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --bg-dark: #0f172a;
-      --bg-card: #1e293b;
+      --primary: #0ea5e9;
+      --primary-hover: #0284c7;
+      --secondary: #10b981;
+      --bg-dark: #0b1324;
+      --bg-card: #131e36;
+      --bg-stage: #070d19;
       --text-main: #f8fafc;
       --text-sub: #94a3b8;
       --accent: #38bdf8;
-      --success: #10b981;
+      --border-color: #243452;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Pretendard', sans-serif;
+      font-family: 'Paperlogy', 'Pretendard', sans-serif;
     }
 
     body {
@@ -34,92 +37,155 @@
       align-items: center;
       justify-content: center;
       overflow-x: hidden;
+      padding: 16px;
     }
 
     .container {
       width: 100%;
-      max-width: 900px;
-      padding: 24px;
+      max-width: 960px;
       text-align: center;
     }
 
-    header {
-      margin-bottom: 32px;
+    /* 상단 유틸리티 바 (사용 설명 & 소리 토글) */
+    .top-bar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
     }
 
-    .badge {
-      display: inline-block;
-      background: rgba(37, 99, 235, 0.2);
-      color: var(--accent);
-      padding: 6px 14px;
-      border-radius: 20px;
+    .util-btn {
+      background: var(--bg-card);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 8px 14px;
+      border-radius: 999px;
       font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 12px;
-      border: 1px solid rgba(56, 189, 248, 0.3);
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .util-btn:hover {
+      border-color: var(--primary);
+      background: #1b2a4a;
+    }
+
+    .util-btn.muted {
+      color: var(--text-sub);
+      border-color: #1e293b;
+    }
+
+    header {
+      margin-bottom: 24px;
     }
 
     h1 {
-      font-size: 36px;
+      font-size: clamp(28px, 4vw, 38px);
       font-weight: 800;
       margin-bottom: 8px;
       letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #38bdf8, #34d399);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     p.subtitle {
       color: var(--text-sub);
-      font-size: 16px;
+      font-size: 15px;
     }
 
-    /* 탭 내비게이션 */
-    .tabs {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 24px;
+    /* 세분화된 스트레칭 & 게임 선택 그리드 */
+    .mode-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+      gap: 10px;
+      margin-bottom: 20px;
     }
 
-    .tab-btn {
+    .mode-card {
       background: var(--bg-card);
       color: var(--text-sub);
-      border: 1px solid #334155;
-      padding: 12px 24px;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: 600;
+      border: 1px solid var(--border-color);
+      padding: 14px 12px;
+      border-radius: 16px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      text-align: center;
     }
 
-    .tab-btn:hover {
+    .mode-card:hover {
       border-color: var(--primary);
+      transform: translateY(-2px);
       color: var(--text-main);
     }
 
-    .tab-btn.active {
-      background: var(--primary);
-      color: #ffffff;
+    .mode-card.active {
+      background: linear-gradient(145deg, rgba(14, 165, 233, 0.2), rgba(16, 185, 129, 0.15));
       border-color: var(--primary);
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+      color: #ffffff;
+      box-shadow: 0 6px 18px rgba(14, 165, 233, 0.25);
+    }
+
+    .mode-card .mode-icon {
+      font-size: 20px;
+      color: var(--accent);
+      margin-bottom: 2px;
+    }
+
+    .mode-card.active .mode-icon {
+      color: #34d399;
+    }
+
+    .mode-card .mode-title {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .mode-card .mode-sub {
+      font-size: 11px;
+      opacity: 0.8;
     }
 
     /* 메인 스테이지 (운동 & 게임 영역) */
     .stage-wrapper {
       background: var(--bg-card);
-      border: 1px solid #334155;
+      border: 1px solid var(--border-color);
       border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.45);
+    }
+
+    /* 진행률 바 */
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: #0b1120;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #0ea5e9, #10b981);
+      transition: width 0.25s linear;
     }
 
     .stage {
       width: 100%;
-      height: 440px;
-      background: #0b1120;
-      border-radius: 16px;
+      height: 410px;
+      background: var(--bg-stage);
+      border-radius: 18px;
       position: relative;
       overflow: hidden;
       display: flex;
@@ -128,37 +194,50 @@
       border: 1px solid #1e293b;
     }
 
+    /* 눈 편한 십자 가이드선 (은은한 시각 보조) */
+    .stage-crosshair {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.12;
+      background-image:
+        linear-gradient(to right, #38bdf8 1px, transparent 1px),
+        linear-gradient(to bottom, #38bdf8 1px, transparent 1px);
+      background-size: 50% 50%;
+      background-position: center center;
+    }
+
     /* 안구 운동 타겟 원 */
     .eye-target {
-      width: 44px;
-      height: 44px;
-      background: radial-gradient(circle at 30% 30%, #60a5fa, #2563eb);
+      width: 48px;
+      height: 48px;
+      background: radial-gradient(circle at 30% 30%, #7dd3fc, #0284c7);
       border-radius: 50%;
       position: absolute;
-      box-shadow: 0 0 24px rgba(59, 130, 246, 0.8), inset 0 0 8px #ffffff;
+      box-shadow: 0 0 28px rgba(56, 189, 248, 0.85), inset 0 0 10px #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.1s linear;
+      z-index: 5;
     }
 
     .eye-target::after {
       content: '';
-      width: 12px;
-      height: 12px;
+      width: 14px;
+      height: 14px;
       background: #ffffff;
       border-radius: 50%;
     }
 
     /* 미니게임 타겟 */
     .game-target {
-      width: 56px;
-      height: 56px;
-      background: radial-gradient(circle at 30% 30%, #34d399, #059669);
+      width: 58px;
+      height: 58px;
+      background: radial-gradient(circle at 30% 30%, #6ee7b7, #059669);
       border-radius: 50%;
       position: absolute;
       cursor: pointer;
-      box-shadow: 0 0 20px rgba(16, 185, 129, 0.7);
+      box-shadow: 0 0 22px rgba(16, 185, 129, 0.8);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -166,148 +245,205 @@
       color: white;
       user-select: none;
       transition: transform 0.1s;
+      z-index: 5;
     }
 
     .game-target:active {
-      transform: scale(0.9);
+      transform: scale(0.88);
     }
 
     /* 컨트롤 패널 */
     .controls {
-      margin-top: 20px;
+      margin-top: 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 14px;
     }
 
     .status-info {
       display: flex;
       align-items: center;
-      gap: 20px;
-      font-size: 16px;
+      gap: 14px;
+      font-size: 15px;
       font-weight: 600;
+      flex-wrap: wrap;
     }
 
     .status-badge {
-      background: #0f172a;
-      padding: 8px 16px;
+      background: #0b1120;
+      padding: 8px 14px;
       border-radius: 10px;
-      border: 1px solid #334155;
-      color: var(--accent);
+      border: 1px solid var(--border-color);
+      color: #34d399;
+    }
+
+    .posture-tip {
+      font-size: 13px;
+      color: var(--text-sub);
     }
 
     .action-btn {
-      background: var(--primary);
+      background: linear-gradient(135deg, #0ea5e9, #10b981);
       color: white;
       border: none;
-      padding: 12px 28px;
+      padding: 12px 26px;
       border-radius: 12px;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       cursor: pointer;
-      transition: background 0.2s;
-      display: flex;
+      transition: all 0.2s;
+      display: inline-flex;
       align-items: center;
       gap: 8px;
+      box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35);
     }
 
     .action-btn:hover {
-      background: var(--primary-hover);
+      filter: brightness(1.08);
+      transform: translateY(-1px);
     }
 
     .action-btn.stop {
       background: #ef4444;
-    }
-
-    .action-btn.stop:hover {
-      background: #dc2626;
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
     }
 
     /* 안내 오버레이 */
     .overlay-msg {
       text-align: center;
       padding: 24px;
-      max-width: 420px;
+      max-width: 460px;
+      z-index: 2;
     }
 
     .overlay-msg i {
-      font-size: 48px;
+      font-size: 46px;
       color: var(--accent);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .overlay-msg h3 {
-      font-size: 22px;
+      font-size: 21px;
       margin-bottom: 8px;
+      font-weight: 700;
     }
 
     .overlay-msg p {
       color: var(--text-sub);
-      font-size: 15px;
-      line-height: 1.5;
+      font-size: 14px;
+      line-height: 1.6;
     }
 
-    /* 칭찬 모달 */
+    /* 모달 공통 스타일 (처음 사용 설명 & 완료 칭찬) */
     .modal-backdrop {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(4px);
+      inset: 0;
+      background: rgba(7, 13, 25, 0.86);
+      backdrop-filter: blur(6px);
       display: none;
       align-items: center;
       justify-content: center;
       z-index: 100;
+      padding: 16px;
     }
 
     .modal-backdrop.show {
       display: flex;
-      animation: fadeIn 0.3s ease;
+      animation: fadeIn 0.25s ease;
     }
 
     .modal-card {
       background: var(--bg-card);
-      border: 1px solid #3b82f6;
+      border: 1px solid #38bdf8;
       border-radius: 24px;
-      padding: 40px;
-      max-width: 440px;
-      width: 90%;
+      padding: 32px 28px;
+      max-width: 500px;
+      width: 100%;
       text-align: center;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.65);
     }
 
-    .trophy-icon {
-      width: 80px;
-      height: 80px;
-      background: rgba(250, 204, 21, 0.15);
-      color: #facc15;
+    /* 사용 설명 모달 전용 스타일 */
+    .guide-steps {
+      text-align: left;
+      background: #0b1120;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 18px;
+      margin: 18px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .guide-step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #e2e8f0;
+    }
+
+    .step-num {
+      background: rgba(14, 165, 233, 0.2);
+      color: #38bdf8;
+      font-weight: 800;
+      min-width: 24px;
+      height: 24px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 40px;
-      margin: 0 auto 20px;
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .caution-box {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: #fcd34d;
+      font-size: 13px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      margin-bottom: 22px;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .trophy-icon {
+      width: 76px;
+      height: 76px;
+      background: rgba(52, 211, 153, 0.15);
+      color: #34d399;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin: 0 auto 18px;
     }
 
     .modal-card h2 {
-      font-size: 28px;
-      margin-bottom: 12px;
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 10px;
       color: #ffffff;
     }
 
-    .modal-card p {
+    .modal-card p.modal-desc {
       color: #cbd5e1;
-      font-size: 16px;
+      font-size: 15px;
       line-height: 1.6;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
+      from { opacity: 0; transform: scale(0.96); }
       to { opacity: 1; transform: scale(1); }
     }
   </style>
@@ -315,43 +451,116 @@
 <body>
 
   <div class="container">
+    <!-- 상단 유틸리티 바 (사용 설명 & 소리 토글) -->
+    <div class="top-bar">
+      <button class="util-btn" onclick="openOnboarding()">
+        <i class="fa-solid fa-circle-question"></i> 사용 설명
+      </button>
+      <button class="util-btn" id="sound-toggle-btn" onclick="toggleSound()">
+        <i class="fa-solid fa-volume-high" id="sound-icon"></i>
+        <span id="sound-label">소리 켜짐</span>
+      </button>
+    </div>
+
     <header>
-      <div class="badge">7차시 프로젝트 · 박동화</div>
       <h1>눈 운동 가이드</h1>
-      <p class="subtitle">스마트폰과 모니터로 지친 눈을 위한 30초 시력 보호 트레이닝</p>
+      <p class="subtitle">원하는 스트레칭 코스를 선택해 피로한 눈 근육을 부드럽게 풀어주세요</p>
     </header>
 
-    <!-- 기능 선택 탭 -->
-    <div class="tabs">
-      <button class="tab-btn active" id="tab-exercise" onclick="switchMode('exercise')">
-        <i class="fa-solid fa-eye"></i> 1. 동적 원 안구 운동
+    <!-- 세분화된 스트레칭 & 미니게임 선택 버튼 -->
+    <div class="mode-grid">
+      <button class="mode-card active" id="mode-all" onclick="selectMode('all')">
+        <i class="fa-solid fa-layer-group mode-icon"></i>
+        <span class="mode-title">전체 코스</span>
+        <span class="mode-sub">좌우·상하·원형 (30초)</span>
       </button>
-      <button class="tab-btn" id="tab-game" onclick="switchMode('game')">
-        <i class="fa-solid fa-gamepad"></i> 2. 시선 집중 미니게임
+      <button class="mode-card" id="mode-horizontal" onclick="selectMode('horizontal')">
+        <i class="fa-solid fa-arrows-left-right mode-icon"></i>
+        <span class="mode-title">좌우 스트레칭</span>
+        <span class="mode-sub">내·외직근 이완 (15초)</span>
+      </button>
+      <button class="mode-card" id="mode-vertical" onclick="selectMode('vertical')">
+        <i class="fa-solid fa-arrows-up-down mode-icon"></i>
+        <span class="mode-title">상하 스트레칭</span>
+        <span class="mode-sub">상·하직근 이완 (15초)</span>
+      </button>
+      <button class="mode-card" id="mode-circle" onclick="selectMode('circle')">
+        <i class="fa-solid fa-rotate mode-icon"></i>
+        <span class="mode-title">원형 회전 운동</span>
+        <span class="mode-sub">시계·반시계 회전 (20초)</span>
+      </button>
+      <button class="mode-card" id="mode-game" onclick="selectMode('game')">
+        <i class="fa-solid fa-gamepad mode-icon"></i>
+        <span class="mode-title">시선 집중 게임</span>
+        <span class="mode-sub">타겟 클릭 훈련 (15초)</span>
       </button>
     </div>
 
     <!-- 메인 스테이지 -->
     <div class="stage-wrapper">
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+
       <div class="stage" id="stage">
+        <div class="stage-crosshair"></div>
+
         <!-- 초기 안내 화면 -->
         <div class="overlay-msg" id="guide-overlay">
-          <i class="fa-solid fa-circle-dot" id="guide-icon"></i>
-          <h3 id="guide-title">상하좌우 & 원형 안구 운동</h3>
-          <p id="guide-desc">고개는 고정한 채, 화면에서 움직이는 파란색 원을 눈동자로만 끝까지 따라가세요.</p>
+          <i class="fa-solid fa-layer-group" id="guide-icon"></i>
+          <h3 id="guide-title">전체 코스 (좌우 → 상하 → 원형 회전)</h3>
+          <p id="guide-desc">고개는 정면으로 고정한 채, 부드러운 효과음과 함께 움직이는 파란색 원을 눈동자로만 따라가세요.</p>
         </div>
       </div>
 
       <!-- 하단 컨트롤 바 -->
       <div class="controls">
         <div class="status-info">
-          <div class="status-badge" id="step-label">대기 중</div>
-          <div id="timer-display">남은 시간: <strong>20초</strong></div>
+          <div class="status-badge" id="step-label">준비 완료</div>
+          <div id="timer-display">남은 시간: <strong>30초</strong></div>
+          <span class="posture-tip"><i class="fa-solid fa-head-side-mask"></i> 고개는 고정하고 눈만 움직이세요</span>
         </div>
         <button class="action-btn" id="start-btn" onclick="toggleSession()">
           <i class="fa-solid fa-play"></i> 운동 시작하기
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- 처음 진입 시 사용 설명 온보딩 모달 -->
+  <div class="modal-backdrop show" id="onboarding-modal">
+    <div class="modal-card">
+      <div class="trophy-icon" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8;">
+        <i class="fa-solid fa-eye"></i>
+      </div>
+      <h2>눈 운동 가이드 사용 설명</h2>
+      <p style="color: #94a3b8; font-size: 14px;">
+        스마트폰·컴퓨터 사용으로 긴장된 눈 근육을 편안하게 풀어주는 트레이닝 앱입니다.
+      </p>
+
+      <div class="guide-steps">
+        <div class="guide-step-item">
+          <span class="step-num">1</span>
+          <div><strong>원하는 운동 선택:</strong> 상단 메뉴에서 <em>전체 코스</em> 또는 <em>좌우·상하·원형 스트레칭</em>, <em>시선 집중 게임</em> 중 원하는 모드를 고르세요.</div>
+        </div>
+        <div class="guide-step-item">
+          <span class="step-num">2</span>
+          <div><strong>시선 따라가기:</strong> 고개는 움직이지 않고 정면을 유지한 채, 리듬 소리에 맞춰 움직이는 원을 눈동자로만 끝까지 따라가세요.</div>
+        </div>
+        <div class="guide-step-item">
+          <span class="step-num">3</span>
+          <div><strong>완료 및 휴식:</strong> 운동이 끝나면 칭찬 메시지와 함께 알림음이 울립니다. 우측 상단에서 소리를 켜고 끌 수 있습니다.</div>
+        </div>
+      </div>
+
+      <div class="caution-box">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>운동 중 눈이 시리거나 어지러우면 즉시 멈추고 눈을 감은 채 휴식해 주세요.</span>
+      </div>
+
+      <button class="action-btn" style="margin: 0 auto; width: 100%; justify-content: center;" onclick="closeOnboarding()">
+        <i class="fa-solid fa-check"></i> 이해했어요, 시작하기!
+      </button>
     </div>
   </div>
 
@@ -362,23 +571,169 @@
         <i class="fa-solid fa-award"></i>
       </div>
       <h2 id="praise-title">정말 훌륭해요! 👏</h2>
-      <p id="praise-text">
+      <p class="modal-desc" id="praise-text">
         눈 운동을 성공적으로 완료했습니다.<br>
         꾸준한 습관이 맑고 건강한 시력을 지킵니다!
       </p>
-      <button class="action-btn" style="margin: 0 auto;" onclick="closeModal()">
+      <button class="action-btn" style="margin: 0 auto;" onclick="closePraiseModal()">
         <i class="fa-solid fa-check"></i> 확인
       </button>
     </div>
   </div>
 
   <script>
-    let currentMode = 'exercise'; // 'exercise' or 'game'
+    // ==========================================
+    // 1. Web Audio API 사운드 매니저 (외부 파일 없이 깔끔한 효과음 생성)
+    // ==========================================
+    let audioCtx = null;
+    let isSoundOn = true;
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContextClass();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playTone(freq, duration = 0.15, type = 'sine', volume = 0.12, delay = 0) {
+      if (!isSoundOn) return;
+      initAudio();
+
+      const now = audioCtx.currentTime + delay;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, now);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(volume, now + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start(now);
+      osc.stop(now + duration + 0.02);
+    }
+
+    const SoundFX = {
+      click() {
+        playTone(587.33, 0.12, 'sine', 0.1); // D5 부드러운 클릭음
+      },
+      start() {
+        playTone(523.25, 0.16, 'sine', 0.12, 0);    // C5
+        playTone(659.25, 0.22, 'sine', 0.12, 0.12); // E5
+      },
+      pulse() {
+        // 원이 양 끝점에 도달할 때 은은한 리듬 가이드음
+        playTone(440, 0.14, 'triangle', 0.07, 0);
+      },
+      phaseChange() {
+        // 단계 전환 시 맑은 알림음
+        playTone(659.25, 0.15, 'sine', 0.1, 0);
+        playTone(783.99, 0.2, 'sine', 0.1, 0.1);
+      },
+      pop() {
+        // 미니게임 타겟 클릭 경쾌한 효과음
+        playTone(783.99, 0.1, 'sine', 0.13, 0);
+        playTone(1046.50, 0.16, 'sine', 0.13, 0.06);
+      },
+      complete() {
+        // 완료 시 따뜻한 화음 멜로디
+        playTone(523.25, 0.25, 'sine', 0.13, 0);    // C5
+        playTone(659.25, 0.25, 'sine', 0.13, 0.12); // E5
+        playTone(783.99, 0.25, 'sine', 0.13, 0.24); // G5
+        playTone(1046.50, 0.45, 'sine', 0.15, 0.36); // C6
+      }
+    };
+
+    function toggleSound() {
+      isSoundOn = !isSoundOn;
+      const btn = document.getElementById('sound-toggle-btn');
+      const icon = document.getElementById('sound-icon');
+      const label = document.getElementById('sound-label');
+
+      if (isSoundOn) {
+        btn.classList.remove('muted');
+        icon.className = 'fa-solid fa-volume-high';
+        label.textContent = '소리 켜짐';
+        SoundFX.click();
+      } else {
+        btn.classList.add('muted');
+        icon.className = 'fa-solid fa-volume-xmark';
+        label.textContent = '소리 꺼짐';
+      }
+    }
+
+    // ==========================================
+    // 2. 사용 설명 온보딩 모달 제어
+    // ==========================================
+    function openOnboarding() {
+      if (isRunning) stopSession(false);
+      SoundFX.click();
+      document.getElementById('onboarding-modal').classList.add('show');
+    }
+
+    function closeOnboarding() {
+      initAudio(); // 사용자 클릭 시점에 오디오 컨텍스트 활성화
+      SoundFX.start();
+      document.getElementById('onboarding-modal').classList.remove('show');
+    }
+
+    // ==========================================
+    // 3. 세분화된 운동 모드 정의 및 상태 관리
+    // ==========================================
+    const MODE_CONFIG = {
+      all: {
+        title: '전체 코스 (좌우 → 상하 → 원형 회전)',
+        desc: '고개는 정면으로 고정한 채, 10초씩 순서대로 진행되는 좌우·상하·원형 코스를 따라가며 눈 전체 근육을 풀어줍니다.',
+        icon: 'fa-solid fa-layer-group',
+        duration: 30,
+        badge: '전체 종합 코스'
+      },
+      horizontal: {
+        title: '좌우 안구 스트레칭',
+        desc: '눈을 왼쪽 끝에서 오른쪽 끝으로 천천히 왕복하며, 옆으로 보는 눈 근육(내·외직근)의 긴장을 이완합니다.',
+        icon: 'fa-solid fa-arrows-left-right',
+        duration: 15,
+        badge: '좌우 집중 이완'
+      },
+      vertical: {
+        title: '상하 안구 스트레칭',
+        desc: '눈을 위쪽 끝에서 아래쪽 끝으로 부드럽게 움직이며, 위·아래로 보는 눈 근육(상·하직근)의 피로를 풀어줍니다.',
+        icon: 'fa-solid fa-arrows-up-down',
+        duration: 15,
+        badge: '상하 집중 이완'
+      },
+      circle: {
+        title: '원형 회전 스트레칭 (시계 / 반시계)',
+        desc: '화면 가장자리를 따라 시계 방향과 반시계 방향으로 크게 원을 그리며 안구 주변 6개 근육을 고르게 자극합니다.',
+        icon: 'fa-solid fa-rotate',
+        duration: 20,
+        badge: '원형 회전 이완'
+      },
+      game: {
+        title: '반짝이는 타겟 잡기 미니게임',
+        desc: '화면 곳곳에 무작위로 나타나는 초록색 타겟을 빠르게 찾아 클릭하세요! 초점 조절 능력과 반응 속도를 키워줍니다.',
+        icon: 'fa-solid fa-gamepad',
+        duration: 15,
+        badge: '점수: 0점'
+      }
+    };
+
+    let currentMode = 'all';
     let isRunning = false;
     let animationFrameId = null;
     let timerInterval = null;
-    let timeLeft = 20;
+    let totalDuration = 30;
+    let timeLeft = 30;
     let score = 0;
+    let lastPulseSign = 0;
+    let lastPhase = '';
 
     const stage = document.getElementById('stage');
     const guideOverlay = document.getElementById('guide-overlay');
@@ -388,74 +743,78 @@
     const stepLabel = document.getElementById('step-label');
     const timerDisplay = document.getElementById('timer-display');
     const startBtn = document.getElementById('start-btn');
+    const progressFill = document.getElementById('progress-fill');
     const praiseModal = document.getElementById('praise-modal');
 
-    // 모드 전환
-    function switchMode(mode) {
-      if (isRunning) stopSession();
+    // 모드 선택
+    function selectMode(mode, playClickSound = true) {
+      if (isRunning) stopSession(false);
+      if (playClickSound) SoundFX.click();
+
       currentMode = mode;
+      const config = MODE_CONFIG[mode];
+      totalDuration = config.duration;
+      timeLeft = config.duration;
 
-      document.getElementById('tab-exercise').classList.toggle('active', mode === 'exercise');
-      document.getElementById('tab-game').classList.toggle('active', mode === 'game');
+      document.querySelectorAll('.mode-card').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(`mode-${mode}`).classList.add('active');
 
-      if (mode === 'exercise') {
-        guideIcon.className = 'fa-solid fa-circle-dot';
-        guideTitle.textContent = '상하좌우 & 원형 안구 운동';
-        guideDesc.textContent = '고개는 고정한 채, 화면에서 움직이는 파란색 원을 눈동자로만 끝까지 따라가세요.';
-        stepLabel.textContent = '안구 스트레칭';
-        timerDisplay.innerHTML = '남은 시간: <strong>20초</strong>';
-        startBtn.innerHTML = '<i class="fa-solid fa-play"></i> 운동 시작하기';
-      } else {
-        guideIcon.className = 'fa-solid fa-bullseye';
-        guideTitle.textContent = '반짝이는 타겟 잡기 미니게임';
-        guideDesc.textContent = '화면 곳곳에 나타나는 초록색 타겟을 빠르게 찾아 클릭하세요! 초점 조절 능력을 키워줍니다.';
-        stepLabel.textContent = '점수: 0점';
-        timerDisplay.innerHTML = '남은 시간: <strong>15초</strong>';
-        startBtn.innerHTML = '<i class="fa-solid fa-play"></i> 게임 시작하기';
-      }
+      guideIcon.className = config.icon;
+      guideTitle.textContent = config.title;
+      guideDesc.textContent = config.desc;
+      stepLabel.textContent = config.badge;
+      timerDisplay.innerHTML = `남은 시간: <strong>${config.duration}초</strong>`;
+      progressFill.style.width = '0%';
+      startBtn.innerHTML = mode === 'game'
+        ? '<i class="fa-solid fa-play"></i> 게임 시작하기'
+        : '<i class="fa-solid fa-play"></i> 운동 시작하기';
     }
 
-    // 시작 / 정지 토글
     function toggleSession() {
       if (isRunning) {
-        stopSession();
+        stopSession(true);
       } else {
         startSession();
       }
     }
 
-    // 세션 시작
     function startSession() {
+      SoundFX.start();
       isRunning = true;
+      lastPulseSign = 0;
+      lastPhase = '';
       guideOverlay.style.display = 'none';
       startBtn.classList.add('stop');
       startBtn.innerHTML = '<i class="fa-solid fa-stop"></i> 중단하기';
 
-      if (currentMode === 'exercise') {
-        startEyeExercise();
-      } else {
+      if (currentMode === 'game') {
         startMiniGame();
+      } else {
+        startEyeExercise(currentMode);
       }
     }
 
-    // 세션 중단 및 초기화
-    function stopSession() {
+    function stopSession(playClick = true) {
+      if (playClick) SoundFX.click();
       isRunning = false;
       cancelAnimationFrame(animationFrameId);
       clearInterval(timerInterval);
 
-      // 스테이지 내 동적 요소 제거
       const targets = stage.querySelectorAll('.eye-target, .game-target');
       targets.forEach(el => el.remove());
 
       guideOverlay.style.display = 'block';
       startBtn.classList.remove('stop');
-      switchMode(currentMode);
+      selectMode(currentMode, false);
     }
 
-    // 1. 핵심 기능 ①: 상하 좌우 원 운동
-    function startEyeExercise() {
-      timeLeft = 20;
+    // ==========================================
+    // 4. 안구 스트레칭 실행 (전체 / 좌우 / 상하 / 원형 개별 지원)
+    // ==========================================
+    function startEyeExercise(mode) {
+      const config = MODE_CONFIG[mode];
+      totalDuration = config.duration;
+      timeLeft = config.duration;
       timerDisplay.innerHTML = `남은 시간: <strong>${timeLeft}초</strong>`;
 
       const target = document.createElement('div');
@@ -466,32 +825,62 @@
 
       function animate(now) {
         if (!isRunning) return;
-        const elapsed = (now - startTime) / 1000; // 초 단위 경과 시간
+        const elapsed = (now - startTime) / 1000;
+
+        // 진행률 바 부드럽게 업데이트
+        const pct = Math.min(100, (elapsed / totalDuration) * 100);
+        progressFill.style.width = `${pct}%`;
 
         const stageW = stage.clientWidth;
         const stageH = stage.clientHeight;
-        const centerX = stageW / 2 - 22;
-        const centerY = stageH / 2 - 22;
-        const rangeX = stageW * 0.38;
-        const rangeY = stageH * 0.35;
+        const centerX = stageW / 2 - 24;
+        const centerY = stageH / 2 - 24;
+        const rangeX = stageW * 0.39;
+        const rangeY = stageH * 0.36;
 
         let x = centerX;
         let y = centerY;
 
-        if (elapsed < 6) {
-          // 0~6초: 좌우 운동
-          stepLabel.textContent = '1단계: 좌우 시선 이동';
-          x = centerX + Math.sin(elapsed * 2.5) * rangeX;
-        } else if (elapsed < 12) {
-          // 6~12초: 상하 운동
-          stepLabel.textContent = '2단계: 상하 시선 이동';
-          y = centerY + Math.sin((elapsed - 6) * 2.5) * rangeY;
+        if (mode === 'horizontal') {
+          stepLabel.textContent = '좌우 왕복 스트레칭';
+          const wave = Math.sin(elapsed * 2.2);
+          x = centerX + wave * rangeX;
+          checkEdgePulse(wave);
+        } else if (mode === 'vertical') {
+          stepLabel.textContent = '상하 왕복 스트레칭';
+          const wave = Math.sin(elapsed * 2.2);
+          y = centerY + wave * rangeY;
+          checkEdgePulse(wave);
+        } else if (mode === 'circle') {
+          if (elapsed < 10) {
+            setPhase('시계 방향 크게 회전');
+            const angle = elapsed * 2.0;
+            x = centerX + Math.cos(angle) * rangeX * 0.85;
+            y = centerY + Math.sin(angle) * rangeY * 0.85;
+          } else {
+            setPhase('반시계 방향 크게 회전');
+            const angle = -(elapsed - 10) * 2.0;
+            x = centerX + Math.cos(angle) * rangeX * 0.85;
+            y = centerY + Math.sin(angle) * rangeY * 0.85;
+          }
         } else {
-          // 12~20초: 큰 원 그리기
-          stepLabel.textContent = '3단계: 크게 원 그리기';
-          const angle = (elapsed - 12) * 2.2;
-          x = centerX + Math.cos(angle) * rangeX * 0.85;
-          y = centerY + Math.sin(angle) * rangeY * 0.85;
+          // 전체 코스 (30초: 0~10초 좌우, 10~20초 상하, 20~30초 원형)
+          if (elapsed < 10) {
+            setPhase('1단계: 좌우 시선 이동');
+            const wave = Math.sin(elapsed * 2.2);
+            x = centerX + wave * rangeX;
+            checkEdgePulse(wave);
+          } else if (elapsed < 20) {
+            setPhase('2단계: 상하 시선 이동');
+            const wave = Math.sin((elapsed - 10) * 2.2);
+            y = centerY + wave * rangeY;
+            checkEdgePulse(wave);
+          } else {
+            setPhase('3단계: 크게 원 그리기');
+            const angle = (elapsed - 20) * 2.1;
+            x = centerX + Math.cos(angle) * rangeX * 0.85;
+            y = centerY + Math.sin(angle) * rangeY * 0.85;
+          }
         }
 
         target.style.left = `${x}px`;
@@ -504,17 +893,39 @@
 
       timerInterval = setInterval(() => {
         timeLeft--;
-        timerDisplay.innerHTML = `남은 시간: <strong>${timeLeft}초</strong>`;
+        timerDisplay.innerHTML = `남은 시간: <strong>${Math.max(0, timeLeft)}초</strong>`;
 
         if (timeLeft <= 0) {
-          completeSession('exercise');
+          completeSession(mode);
         }
       }, 1000);
     }
 
-    // 2. 핵심 기능 ②: 간단한 미니게임
+    function setPhase(phaseText) {
+      if (lastPhase !== phaseText) {
+        if (lastPhase !== '') SoundFX.phaseChange();
+        lastPhase = phaseText;
+        stepLabel.textContent = phaseText;
+      }
+    }
+
+    // 원이 양 끝점에 도달할 때 리듬 효과음 재생
+    function checkEdgePulse(waveValue) {
+      if (waveValue > 0.96 && lastPulseSign !== 1) {
+        lastPulseSign = 1;
+        SoundFX.pulse();
+      } else if (waveValue < -0.96 && lastPulseSign !== -1) {
+        lastPulseSign = -1;
+        SoundFX.pulse();
+      }
+    }
+
+    // ==========================================
+    // 5. 시선 집중 미니게임
+    // ==========================================
     function startMiniGame() {
-      timeLeft = 15;
+      totalDuration = MODE_CONFIG.game.duration;
+      timeLeft = totalDuration;
       score = 0;
       stepLabel.textContent = `점수: ${score}점`;
       timerDisplay.innerHTML = `남은 시간: <strong>${timeLeft}초</strong>`;
@@ -523,7 +934,9 @@
 
       timerInterval = setInterval(() => {
         timeLeft--;
-        timerDisplay.innerHTML = `남은 시간: <strong>${timeLeft}초</strong>`;
+        const pct = ((totalDuration - timeLeft) / totalDuration) * 100;
+        progressFill.style.width = `${pct}%`;
+        timerDisplay.innerHTML = `남은 시간: <strong>${Math.max(0, timeLeft)}초</strong>`;
 
         if (timeLeft <= 0) {
           completeSession('game');
@@ -540,8 +953,8 @@
       target.className = 'game-target';
       target.innerHTML = '<i class="fa-solid fa-eye"></i>';
 
-      const maxX = stage.clientWidth - 76;
-      const maxY = stage.clientHeight - 76;
+      const maxX = Math.max(20, stage.clientWidth - 78);
+      const maxY = Math.max(20, stage.clientHeight - 78);
       const randomX = Math.floor(Math.random() * maxX) + 10;
       const randomY = Math.floor(Math.random() * maxY) + 10;
 
@@ -549,6 +962,7 @@
       target.style.top = `${randomY}px`;
 
       target.onclick = () => {
+        SoundFX.pop();
         score += 10;
         stepLabel.textContent = `점수: ${score}점`;
         spawnGameTarget();
@@ -557,25 +971,48 @@
       stage.appendChild(target);
     }
 
-    // 3. 핵심 기능 ③: 운동 완료 후 칭찬 시스템
+    // ==========================================
+    // 6. 운동 완료 후 칭찬 & 보상 모달
+    // ==========================================
     function completeSession(mode) {
-      stopSession();
+      stopSession(false);
+      SoundFX.complete();
 
       const praiseTitle = document.getElementById('praise-title');
       const praiseText = document.getElementById('praise-text');
 
-      if (mode === 'exercise') {
-        praiseTitle.textContent = '최고예요! 눈의 피로가 싹 풀렸어요 ✨';
-        praiseText.innerHTML = '20초 동안 안구 운동을 완벽하게 해내셨습니다.<br>오늘도 건강한 시력을 잘 지켜내셨네요!';
-      } else {
-        praiseTitle.textContent = `대단해요! 최종 점수 ${score}점 달성! 🎉`;
-        praiseText.innerHTML = '빠른 시선 이동과 집중력이 정말 뛰어납니다.<br>잠시 먼 곳을 바라보며 눈을 편안히 쉬게 해주세요!';
-      }
+      const PRAISE_MESSAGES = {
+        all: {
+          title: '완벽해요! 전체 눈 운동 코스를 마쳤어요 ✨',
+          text: '좌우, 상하, 원형 회전까지 30초 동안 훌륭하게 해내셨습니다.<br>눈의 뻐근함이 한결 부드러워졌을 거예요!'
+        },
+        horizontal: {
+          title: '잘하셨어요! 좌우 스트레칭 완료 👏',
+          text: '좌우로 시선을 끝까지 움직여 내·외직근의 긴장을 잘 풀어주셨습니다.<br>다른 방향 스트레칭도 함께 해보세요!'
+        },
+        vertical: {
+          title: '훌륭해요! 상하 스트레칭 완료 🌟',
+          text: '위아래 안구 운동으로 고정되었던 초점 근육이 시원하게 이완되었습니다.<br>꾸준한 관리가 건강한 눈을 만듭니다!'
+        },
+        circle: {
+          title: '멋져요! 원형 회전 스트레칭 완료 🔄',
+          text: '시계·반시계 방향으로 크게 원을 그리며 눈 주변 근육을 고르게 풀어주셨네요.<br>잠시 눈을 지그시 감고 여운을 느껴보세요!'
+        },
+        game: {
+          title: `대단해요! 최종 점수 ${score}점 달성! 🎉`,
+          text: '빠른 시선 이동과 초점 집중력이 정말 뛰어납니다.<br>잠시 먼 곳을 바라보며 눈을 편안히 쉬게 해주세요!'
+        }
+      };
+
+      const msg = PRAISE_MESSAGES[mode] || PRAISE_MESSAGES.all;
+      praiseTitle.textContent = msg.title;
+      praiseText.innerHTML = msg.text;
 
       praiseModal.classList.add('show');
     }
 
-    function closeModal() {
+    function closePraiseModal() {
+      SoundFX.click();
       praiseModal.classList.remove('show');
     }
   </script>
